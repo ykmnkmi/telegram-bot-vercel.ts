@@ -14,10 +14,10 @@ bot.command('about', about());
 bot.on('message', greeting());
 
 const startVercel = async (
-  req: VercelRequest,
-  res: VercelResponse
+  request: VercelRequest,
+  response: VercelResponse
 ) => {
-  await production(req, res, bot);
+  await production(request, response, bot);
 };
 
 if (ENVIRONMENT !== 'production') {
