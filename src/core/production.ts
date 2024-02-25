@@ -1,7 +1,8 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import createDebug from 'debug';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
+
+import createDebug from 'debug';
 
 const debug = createDebug('bot:dev');
 
@@ -14,17 +15,18 @@ const production = async (
   bot: Telegraf<Context<Update>>
 ) => {
   debug('Bot runs in production mode');
-  debug(`setting webhook: ${VERCEL_URL}`);
+  debug(`Setting webhook: ${VERCEL_URL}`);
 
   if (!VERCEL_URL) {
     throw new Error('VERCEL_URL is not set.');
   }
 
   const getWebhookInfo = await bot.telegram.getWebhookInfo();
+
   if (getWebhookInfo.url !== VERCEL_URL + '/api') {
-    debug(`deleting webhook ${VERCEL_URL}`);
+    debug(`Deleting webhook ${VERCEL_URL}`);
     await bot.telegram.deleteWebhook();
-    debug(`setting webhook: ${VERCEL_URL}/api`);
+    debug(`Setting webhook: ${VERCEL_URL}/api`);
     await bot.telegram.setWebhook(`${VERCEL_URL}/api`);
   }
 
@@ -33,6 +35,8 @@ const production = async (
   } else {
     res.status(200).json('Listening to bot events...');
   }
-  debug(`starting webhook on port: ${PORT}`);
+
+  debug(`Starting webhook on port: ${PORT}`);
 };
+
 export { production };
